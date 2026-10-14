@@ -1,0 +1,78 @@
+name: Publish verified Windows Alpha
+on:
+  push:
+    branches: [publish-alpha]
+    paths: [.github/workflows/publish-alpha.yml, release-manifest.json]
+permissions:
+  contents: read
+concurrency:
+  group: publish-alpha-1
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.repository == 'NiJaoKi/Sentinel-Releases'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Download only approved release assets
+        env:
+          GH_TOKEN: ${{ secrets.SOURCE_RELEASE_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "$GH_TOKEN" ]; then
+            echo '::error::Add SOURCE_RELEASE_TOKEN with Contents: read access to NiJaoKi/Sentinel, then rerun this job.'
+            exit 1
+          fi
+          mkdir assets
+          gh release download v0.4.0-alpha.1 --repo NiJaoKi/Sentinel --dir assets
+      - name: Verify exact asset list and approved hashes
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          expected=json.loads(pathlib.Path('release-manifest.json').read_text())
+          root=pathlib.Path('assets')
+          assert {p.name for p in root.iterdir()}==set(expected), 'Unexpected asset list'
+          for name,digest in expected.items():
+              with (root/name).open('rb') as f:
+                  actual=hashlib.file_digest(f,'sha256').hexdigest()
+              assert actual==digest, f'Hash mismatch: {name}'
+          info=json.loads((root/'BUILD-INFO.json').read_text())
+          assert '146d9e2ac4f75aae58eb82c23e5fe39c76a74beb' in json.dumps(info), 'Unexpected source commit'
+          print('Verified all six approved assets.')
+          PY
+      - name: Publish and verify uploaded bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag=v0.4.0-alpha.1
+          repo=NiJaoKi/Sentinel-Releases
+          gh api "repos/$repo" --jq .visibility | grep -qx public
+          gh api "repos/$repo/releases?per_page=100" > releases.json
+          python3 - <<'PY'
+          import json
+          assert not any(r['tag_name']=='v0.4.0-alpha.1' for r in json.load(open('releases.json'))), 'Release already exists; refusing to overwrite it'
+          PY
+          gh release create "$tag" assets/* --repo "$repo" --target "$GITHUB_SHA" --draft --prerelease --title 'Sentinel 0.4.0 — Windows x64 Alpha 1' --notes-file RELEASE-NOTES.md
+          mkdir verification
+          gh release download "$tag" --repo "$repo" --dir verification
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          expected=json.loads(pathlib.Path('release-manifest.json').read_text())
+          root=pathlib.Path('verification')
+          assert {p.name for p in root.iterdir()}==set(expected)
+          for name,digest in expected.items():
+              with (root/name).open('rb') as f:
+                  assert hashlib.file_digest(f,'sha256').hexdigest()==digest, name
+          PY
+          gh release edit "$tag" --repo "$repo" --draft=false --prerelease --latest=false
+      - name: Check download without authentication
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output anonymous.exe https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.0-alpha.1/Sentinel-Setup-0.4.0-x64.exe
+          echo 'e565df6a310101ed2b2c5cf80956e8bcabecbfe1c0a0525d1c3de313d53c07bf  anonymous.exe' | sha256sum --check
