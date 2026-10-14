@@ -6,7 +6,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: publish-alpha-3
+  group: publish-ui-0.4.1-alpha-1
   cancel-in-progress: false
 jobs:
   publish:
@@ -29,7 +29,7 @@ jobs:
             exit 1
           fi
           mkdir assets
-          gh release download v0.4.0-alpha.3 --repo NiJaoKi/Sentinel --dir assets
+          gh release download v0.4.1-alpha.1 --repo NiJaoKi/Sentinel --dir assets
       - name: Verify exact asset list and approved hashes
         run: |
           python3 - <<'PY'
@@ -42,23 +42,23 @@ jobs:
                   actual=hashlib.file_digest(f,'sha256').hexdigest()
               assert actual==digest, f'Hash mismatch: {name}'
           info=json.loads((root/'BUILD-INFO.json').read_text())
-          assert '2719442086cc3ee751d6715d5da2fe260128d57e' in json.dumps(info), 'Unexpected source commit'
-          print('Verified all six approved assets.')
+          assert '823fe48bf44a4e017f30428da6f4172c3ce46a0d' in json.dumps(info), 'Unexpected source commit'
+          print('Verified all seven approved assets.')
           PY
       - name: Publish and verify uploaded bytes
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          tag=v0.4.0-alpha.3
+          tag=v0.4.1-alpha.1
           repo=NiJaoKi/Sentinel-Releases
           gh api "repos/$repo" --jq .visibility | grep -qx public
           gh api "repos/$repo/releases?per_page=100" > releases.json
           python3 - <<'PY'
           import json
-          assert not any(r['tag_name']=='v0.4.0-alpha.3' for r in json.load(open('releases.json'))), 'Release already exists; refusing to overwrite it'
+          assert not any(r['tag_name']=='v0.4.1-alpha.1' for r in json.load(open('releases.json'))), 'Release already exists; refusing to overwrite it'
           PY
-          gh release create "$tag" assets/* --repo "$repo" --target "$GITHUB_SHA" --draft --prerelease --title 'Sentinel 0.4.0 — Windows x64 Alpha 3' --notes-file RELEASE-NOTES.md
+          gh release create "$tag" assets/* --repo "$repo" --target "$GITHUB_SHA" --draft --prerelease --title 'Sentinel 0.4.1 — Console & Installer Alpha 1' --notes-file RELEASE-NOTES.md
           mkdir verification
           gh release download "$tag" --repo "$repo" --dir verification
           python3 - <<'PY'
@@ -74,10 +74,10 @@ jobs:
       - name: Check download without authentication
         run: |
           set -euo pipefail
-          curl --fail --location --retry 3 --output anonymous.exe https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.0-alpha.3/Sentinel-Setup-0.4.0-x64.exe
+          curl --fail --location --retry 3 --output anonymous.exe https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.1-alpha.1/Sentinel-Setup-0.4.1-x64.exe
           python3 - <<'PY'
           import hashlib,json
           with open('anonymous.exe','rb') as f:
-              assert hashlib.file_digest(f,'sha256').hexdigest()==json.load(open('release-manifest.json'))['Sentinel-Setup-0.4.0-x64.exe']
+              assert hashlib.file_digest(f,'sha256').hexdigest()==json.load(open('release-manifest.json'))['Sentinel-Setup-0.4.1-x64.exe']
           print('Anonymous installer download hash verified.')
           PY
