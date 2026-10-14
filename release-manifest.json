@@ -1,9 +1,9 @@
 {
-  "BUILD-INFO.json": "720aebf6478416a04e30374ff0b82ec0e4e5d52713e4f53f0a3eeea5a786e878",
-  "Sentinel-0.4.1-Design-Preview.zip": "d460d5867f4e232a76ed24a281d5f5f8fe9a93566904e5c87c81ddeb2589d187",
-  "Sentinel-0.4.1-Windows-x64-TestKit.zip": "ab81125f9e83d37236ab6f8709889d7afd60bd44fa05a2474812abd64f8c410e",
-  "Sentinel-Setup-0.4.1-x64.exe": "020fb36d4cc236052e297be1cb78da880b41590cb1d9a2b6d2ffc0a4b7dd3f9f",
-  "SHA256SUMS.txt": "15968c1715ca69bf4a6a0e2ab0b0321c4afd2124265b9ccde3bcba0aa9b331ad",
+  "BUILD-INFO.json": "e5d167e461a7261637e7059cf9a68fab748784a1b7f35701ab3f16cb4a1b9835",
+  "Sentinel-0.4.1-Design-Preview.zip": "460be0ec274b66b6ee124e9b1844fe01fb5da58803e0a490dfc791f9de64ebf3",
+  "Sentinel-0.4.1-Windows-x64-TestKit.zip": "913e3bfc5f695443b68340ef356d9f2e195af2bdd2bf0408ca146f5b34fbb0e7",
+  "Sentinel-Setup-0.4.1-x64.exe": "b35c869dbd0c211f8f046a6470a443ef5f5a8701a35f99049806ac9c7ae75b56",
+  "SHA256SUMS.txt": "6605db440086d78e245a3f41d78f3e983ba7e3955f849b630b8e2c0f6bae3a28",
   "START-HERE.html": "adbe95b02ad9045f5a9ac045b533f52024e8033aca574725948c8c195de72b89",
-  "UPDATE-LOG.md": "fb1399345357adacbb269add0911ffa08b1f047207d833e792cd90ded5136960"
+  "UPDATE-LOG.md": "2fa04970e05183f538f15dfbe2720ed0ebe98f502407a2ef48f4ebf9747a987e"
 }
