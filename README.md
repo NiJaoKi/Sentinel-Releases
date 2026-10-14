@@ -1,14 +1,14 @@
 # Sentinel — Windows releases
 
-Текущая версия: **0.4.0-alpha.1** — тестовая сборка для Windows 10/11 x64.
+Текущая версия: **0.4.0-alpha.2** — тестовая сборка для Windows 10/11 x64.
 
-- [Установщик — 193 МБ](https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.0-alpha.1/Sentinel-Setup-0.4.0-x64.exe)
-- [Тестовый комплект — 237 МБ](https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.0-alpha.1/Sentinel-0.4.0-Windows-x64-TestKit.zip)
-- [Релиз и история изменений](https://github.com/NiJaoKi/Sentinel-Releases/releases/tag/v0.4.0-alpha.1)
+- [Установщик](https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.0-alpha.2/Sentinel-Setup-0.4.0-x64.exe)
+- [Полный тестовый комплект](https://github.com/NiJaoKi/Sentinel-Releases/releases/download/v0.4.0-alpha.2/Sentinel-0.4.0-Windows-x64-TestKit.zip)
+- [Релиз и история изменений](https://github.com/NiJaoKi/Sentinel-Releases/releases/tag/v0.4.0-alpha.2)
 
-Скачивание без учётной записи GitHub проверено. Распакуйте комплект и откройте START-HERE.html.
+**Alpha 2 исправляет аварийный выход установщика Alpha 1:** конфликт режимов COM приводил к RPC_E_CHANGED_MODE (0x80010106). Входной поток Burn теперь использует MTA, интерфейс WPF и предпросмотр — STA. Реальное окно EXE, установка/восстановление/удаление через MSI, синтетическое обновление/откат и RU/UA-предпросмотр прошли Windows CI. Повторный запуск и интерактивная установка на пользовательских Windows 10 22H2 и Windows 11 25H2 пока ожидаются.
 
-**Известная проблема:** пользователь сообщил, что на Windows 10 22H2 процессы установщика появляются и сразу закрываются без окна. Причина пока не установлена; исправленная сборка ещё не опубликована. Интерактивная проверка Windows 10/11 остаётся незавершённой.
+Скачивание без учётной записи GitHub и SHA-256 проверены. Распакуйте комплект и откройте START-HERE.html. При повторной проверке скачайте новый файл: имя EXE совпадает с Alpha 1.
 
 Установщик пока не подписан. Сохраняйте Defender, Firewall и UAC включёнными. Sentinel работает в режиме обнаружения и наблюдения; автоматического удаления, карантина и сетевого автообновления в этой сборке нет.
 
