@@ -1,4 +1,4 @@
-Windows 10/11 x64, package 0.4.0, Alpha 2. Detection and monitoring only.
+Windows 10/11 x64, package 0.4.0, Alpha 3. Detection and monitoring only.
 
 Download `Sentinel-0.4.0-Windows-x64-TestKit.zip`, extract it and open `START-HERE.html`. The kit includes the offline installer, self-contained diagnostic checker, safe test files, licenses and Update Log. No GitHub account or .NET SDK is required to download or run the kit.
 
@@ -9,3 +9,5 @@ Interactive Windows 10/11 validation, authentic historical installation migratio
 Скачайте ZIP-комплект, распакуйте и откройте START-HERE.html. Учётная запись GitHub для скачивания не нужна. Установщик тестовый и пока не подписан. История изменений — UPDATE-LOG.md. Автоматическое сетевое обновление приложения ещё не реализовано.
 
 Alpha 2 fixes the Burn COM apartment startup crash (RPC_E_CHANGED_MODE / 0x80010106). Burn entry now uses MTA; WPF UI and previews retain STA. Real EXE startup is checked before publication. Retesting on Windows 10 22H2 / Windows 11 25H2 remains necessary.
+
+Alpha 3 unifies Console and installer styling, fixes checkbox contrast, adds shared generated raster-layer diamond fill animation and a localized log-folder action. Legacy Logs permissions for the exact SentinelFoundation service SID are recognized. Configuration/executable write restrictions and rejection of unrelated service SIDs remain enforced. Existing modified configuration or unregistered service installations are not silently adopted. Manual Windows-client acceptance remains pending.
